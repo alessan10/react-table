@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useTable } from 'react-table'
+import { useTable, useSortBy } from 'react-table'
 import MOCK_DATA from '../mock/MOCK_DATA.json'
 import { COLUMNS, GROUPED_COLUMNS } from './columns';
 
@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 import '../assets/index.css'
 
 //da qui
-export const BasicTable = () =>{
+export const SortingTable = () =>{
 
     //prima della chiamata di useTable 
     const columns = useMemo (() => /*GROUPED_COLUMNS*/COLUMNS, []) //arrow function che ritorna le colonne e un array vuoto
@@ -19,10 +19,10 @@ export const BasicTable = () =>{
         /*columns: columns,
         data: data*/
         //questo può essere semplificato grazie alla sintassi es6 in:
-        
         columns,
-        data
-    })
+        data,
+    },
+    useSortBy) //questo aggiunge la feature di ordinamento alla tabella
     
     //use table ritorna una table instance che memorizziamo in una costante
     const { 
@@ -42,7 +42,12 @@ export const BasicTable = () =>{
                         <tr {...headerGroup.getHeaderGroupProps()}> 
                         {
                             headerGroup.headers.map((column) => (
-                                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                    {column.render('Header')}
+                                    <span>
+                                        {column.isSorted ? (column.isSortedDesc ? '🔽':'🔼'): ''}
+                                    </span>
+                                    </th>
                             ))
                         }
                             
