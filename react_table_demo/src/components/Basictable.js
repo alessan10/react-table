@@ -6,7 +6,7 @@ import { COLUMNS } from './columns';
 
 import { useMemo } from 'react';
 
-import './table.css'
+import '../assets/index.css'
 
 //da qui
 export const BasicTable = () =>{
@@ -25,11 +25,11 @@ export const BasicTable = () =>{
     })
     
     //use table ritorna una table instance che memorizziamo in una costante
-
     const { 
         getTableProps, 
         getTableBodyProps, 
         headerGroups, 
+        footerGroups,
         rows, 
         prepareRow 
     } = tableInstance    
@@ -70,6 +70,23 @@ export const BasicTable = () =>{
                 }
                 
             </tbody>
+            <tfoot>
+                {
+                    footerGroups.map(footerGroup => (
+                        <tr {...footerGroup.getFooterGroupProps()}>
+                            {
+                            footerGroup.headers.map(column => (
+                                <td {...column.getFooterProps}>
+                                    {
+                                        column.render('Footer')
+                                    }
+                                </td>
+                            ))
+                        }
+                        </tr>  
+                    ))
+                }
+            </tfoot>
         </table>
     )
 }
