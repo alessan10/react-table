@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useTable } from 'react-table'
 import MOCK_DATA from '../mock/MOCK_DATA.json'
-import { COLUMNS, GROUPED_COLUMNS } from './columns';
+import { COLUMNS, GROUPED_COLUMNS } from '../utils/columns';
 
 import { useMemo } from 'react';
 

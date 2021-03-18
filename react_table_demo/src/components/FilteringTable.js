@@ -1,15 +1,16 @@
 import React from 'react'
 
-import { useTable, useSortBy } from 'react-table'
+import { useTable, useGlobalFilter } from 'react-table'
 import MOCK_DATA from '../mock/MOCK_DATA.json'
 import { COLUMNS, GROUPED_COLUMNS } from '../utils/columns';
 
 import { useMemo } from 'react';
 
 import '../assets/index.css'
+import { GlobalFilter } from '../utils/GlobalFilter';
 
 //da qui
-export const SortingTable = () =>{
+export const FilteringTable = () =>{
 
     //prima della chiamata di useTable 
     const columns = useMemo (() => /*GROUPED_COLUMNS*/COLUMNS, []) //arrow function che ritorna le colonne e un array vuoto
@@ -19,10 +20,10 @@ export const SortingTable = () =>{
         /*columns: columns,
         data: data*/
         //questo può essere semplificato grazie alla sintassi es6 in:
+        
         columns,
-        data,
-    },
-    useSortBy) //questo aggiunge la feature di ordinamento alla tabella
+        data
+    },useGlobalFilter)
     
     //use table ritorna una table instance che memorizziamo in una costante
     const { 
@@ -31,10 +32,16 @@ export const SortingTable = () =>{
         headerGroups, 
         footerGroups,
         rows, 
-        prepareRow 
+        prepareRow,
+        state,
+        setGlobalFilter,
     } = tableInstance    
 
+    const {globalFilter} = state
+
     return (
+        <>
+        <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
         <table {...getTableProps()}>
             <thead>
                 {
@@ -42,12 +49,7 @@ export const SortingTable = () =>{
                         <tr {...headerGroup.getHeaderGroupProps()}> 
                         {
                             headerGroup.headers.map((column) => (
-                                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                                    {column.render('Header')}
-                                    <span>
-                                        {column.isSorted ? (column.isSortedDesc ? '🔽':'🔼'): ''}
-                                    </span>
-                                    </th>
+                                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
                             ))
                         }
                             
@@ -93,6 +95,7 @@ export const SortingTable = () =>{
                 }
             </tfoot>
         </table>
+        </>
     )
 }
 //a qui

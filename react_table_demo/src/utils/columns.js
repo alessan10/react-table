@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 //array di oggetti (colonne)
 export const COLUMNS = [ 
     {
@@ -18,7 +19,8 @@ export const COLUMNS = [
     {
         Header: 'Date Of Birth',
         Footer: 'Date Of Birth',
-        accessor: 'date_of_birth'
+        accessor: 'date_of_birth',
+        Cell: ({value}) => { return format(new Date(value), 'dd/MM/yyyy')}
     },
     {
         Header: 'Country',
